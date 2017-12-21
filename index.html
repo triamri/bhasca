@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    
+</head>
+<body>
+    <div id="app">
+            <div class="upload">
+                    <h3>Select File</h3>
+            <div class="login-form">
+                    <form>
+                        <div>
+                            <span>Url</span>
+                                <input type="text" id="url" />
+                        </div>
+                    </form>
+                    <div style="margin-bottom:5px;">
+                        <input type="file" name="upl" id="file" />
+                    
+                    </div>
+                    <div id="drop">
+
+                            <button type="button" class="btn btn-success" v-on:click="uploadFile">Success</button>
+                            
+                    </div>
+                    <div style="margin:20px;">
+                        <img :src="image" />
+                    </div>
+                    <div style="margin:20px;">
+                        <p>{{ text }}</p>
+                    </div>
+            </div>  
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script>
+
+    const app = new Vue({
+        el : '#app',
+        data : {
+            image : '',
+            text : null
+        },
+        created(){
+
+        },
+        methods:{
+            uploadFile : function(){
+                if(document.getElementById('file').files.length){
+                    this.getFile()
+                }else{
+                    this.getUrl()
+                }                
+            },
+            getUrl : function(){
+                axios.post('http://localhost:3000/url',{
+                    url : document.getElementById('url').value
+                })
+                .then((result)=>{
+                    this.image = document.getElementById('url').value
+                    this.text = result.data.data;
+                    localStorage.setItem('img',result.data.data);
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            },
+            getFile : function(){
+                const data = new FormData();
+
+
+                data.append('file',document.getElementById('file').files[0]);
+
+                
+                axios.post('http://localhost:3000/upload', data)
+                .then((result)=>{
+                    
+                    localStorage.setItem('img',result.data.data.filename);
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+        }
+    })
+
+</script>
+
+</html>
