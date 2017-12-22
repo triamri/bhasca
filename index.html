@@ -11,29 +11,49 @@
 <body>
     <div id="app">
             <div class="upload">
-                    <h3>Select File</h3>
+                    <h3 style="color:white">Select File</h3>
             <div class="login-form">
-                    <form>
+                <div class="form-group">
+                    <div class="col-md-12">
                         <div>
                             <span>Url</span>
-                                <input type="text" id="url" />
+                                <input type="text" id="url" class="form-control" />
                         </div>
-                    </form>
-                    <div style="margin-bottom:5px;">
-                        <input type="file" name="upl" id="file" />
-                    
                     </div>
-                    <div id="drop">
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                            
+                        <input type="file" class="form-control" id="file" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <select id="from" class="form-control">
+                            <option value="id">Indonesia</option>
+                            <option value="en">English</option>
+                            <option value="es">Spanyol</option>
+                            <option value="nl">Belanda</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
 
                             <button type="button" class="btn btn-success" v-on:click="uploadFile">Success</button>
                             
                     </div>
-                    <div style="margin:20px;">
-                        <img :src="image" />
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <img :src="image" style="width:100%;"/>
                     </div>
-                    <div style="margin:20px;">
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
                         <p>{{ text }}</p>
                     </div>
+                </div>
             </div>  
         </div>
     </div>
@@ -65,7 +85,8 @@
             },
             getUrl : function(){
                 axios.post('http://localhost:3000/url',{
-                    url : document.getElementById('url').value
+                    url : document.getElementById('url').value,
+                    from : document.getElementById('from').value
                 })
                 .then((result)=>{
                     this.image = document.getElementById('url').value
@@ -77,15 +98,12 @@
                 })
             },
             getFile : function(){
-                const data = new FormData();
-
-
-                data.append('file',document.getElementById('file').files[0]);
-
                 
+                const data = new FormData();
+                data.append('file',document.getElementById('file').files[0]);
+                data.append('from',document.getElementById('from').value);                
                 axios.post('http://localhost:3000/upload', data)
-                .then((result)=>{
-                    
+                .then((result)=>{                    
                     localStorage.setItem('img',result.data.data.filename);
                 })
                 .catch(err => {
