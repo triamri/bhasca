@@ -36,7 +36,7 @@ const app = new Vue({
             }                
         },
         getUrl : function(){
-            axios.post('http://localhost:3000/api/url',{
+            axios.post('http://localhost:3000/api/photo/url',{
                 url : document.getElementById('url').value,
                 from : document.getElementById('from').value
             })
@@ -60,7 +60,7 @@ const app = new Vue({
                 this.image = result.data.image;
                 this.text = result.data.data;
                 // document.getElementById('file').files = '';  
-                console.log(result.data.data);                  
+                console.log(result);                  
                 // localStorage.setItem('img',result.data.data.filename);
             })
             .catch(err => {
