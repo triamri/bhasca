@@ -36,7 +36,7 @@ const app = new Vue({
             }                
         },
         getUrl : function(){
-            axios.post('http://localhost:3000/url',{
+            axios.post('http://localhost:3000/api/photo/url',{
                 url : document.getElementById('url').value,
                 from : document.getElementById('from').value
             })
@@ -54,14 +54,14 @@ const app = new Vue({
         getFile : function(){
             
             const data = new FormData();
-            data.append('file',document.getElementById('file').files[0]);
+            data.append('image',document.getElementById('file').files[0]);
             data.append('from',document.getElementById('from').value);                
-            axios.post('http://localhost:3000/upload', data)
+            axios.post('http://localhost:3000/api/photo', data)
             .then((result)=>{
                 this.image = result.data.image;
                 this.text = result.data.data;
-                // document.getElementById('file').files = '';  
-                console.log(result.data.data);                  
+                document.getElementById('file').files = '';  
+                console.log(result);                  
                 // localStorage.setItem('img',result.data.data.filename);
             })
             .catch(err => {
