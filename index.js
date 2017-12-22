@@ -51,8 +51,7 @@ const app = new Vue({
                 console.log(err)
             })
         },
-        getFile : function(){
-            
+        getFile : function(){            
             const data = new FormData();
             data.append('image',document.getElementById('file').files[0]);
             data.append('from',document.getElementById('from').value);                
@@ -60,7 +59,7 @@ const app = new Vue({
             .then((result)=>{
                 this.image = result.data.image;
                 this.text = result.data.data;
-                document.getElementById('file').files = '';  
+                // document.getElementById('file').files = '';  
                 console.log(result);                  
                 // localStorage.setItem('img',result.data.data.filename);
             })
